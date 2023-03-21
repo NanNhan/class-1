@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+# define ElemType int
+//定义单链表结点类型
+typedef struct LNode						
+{
+	ElemType data;							//数据域
+	struct LNode *next;							//指针域
+}LNode, *LinkList;
+
+//用尾插法建立单链表，返回头指针
+LNode *create (ElemType data[], int n)
+{	
+	LNode *head, *p, *rear;
+	int k;
+	head = (LNode *) malloc (sizeof (LNode));		//生成头结点
+	head -> next = NULL;						//第一个结点为空
+	rear = head;								//尾指针指向头结点
+	for (k = 0; k < n; k ++)						//用尾插法插入n个结点
+	{	
+		p = (LNode *) malloc (sizeof (LNode));		//生成新结点
+		p -> data = data[k];						//为新结点的数据域赋值
+		p -> next = NULL;						//新结点的指针域为空
+		rear -> next = p;						//将新结点插入链表末尾
+		rear = p;								//尾指针指向新插入结点
+}
+	return head;								//返回头指针
+}
+
+//输出链表中的数据元素
+void display (LNode *head)
+{	
+	LNode *p;
+	p = head -> next;							//指针p指向链表中第一个结点
+	while (p)
+	{
+		printf ("%d  ", p -> data);
+		p = p -> next;							//指针p指向下一结点
+}
+printf ("\n");
+}
+//输出两个集合的交集
+LNode *inter(LNode *head1,LNode *head2)
+{
+	LNode *p,*q,*head3,*s;
+	head3 = (LNode*)malloc(sizeof(LNode));
+	p = head1 ->next;
+	q = head2 ->next;
+	head3 ->next = NULL;
+	while(p)
+	{
+		while(q)
+		{
+			if(p->data == q->data)
+			{
+				s = (LNode*)malloc(sizeof(LNode));
+				s->data = p->data;
+				s->next = head3 ->next;
+				head3 ->next = s;
+				break;
+			}
+			else
+				q = q->next;
+		}
+		p = p->next;
+		q = head2 ->next;
+	}
+	return head3;
+}
+
+void main ()
+{
+	int data1[10], data2[10];
+	int num1, num2, i;
+	LNode *h1, *h2, *h3;
+	printf ("输入集合A中的元素数：");
+	scanf ("%d", &num1);
+	printf ("输入集合A中的数据元素：");
+	for (i = 0; i < num1; i ++)
+		scanf ("%d", &data1[i]);
+	printf ("输入集合B中的元素数：");
+	scanf ("%d", &num2);
+	printf ("输入集合B中的数据元素：");
+	for (i = 0; i < num2; i ++)
+		scanf ("%d", &data2[i]);
+	h1 = create (data1, num1);					//生成链表1
+	h2 = create (data2, num2);					//生成链表2
+	printf ("生成如下两个链表\n");
+	printf ("链表1：");
+	display (h1);								//输出链表1中数据元素
+	printf ("链表2：");
+	display (h2);//输出链表2中数据元素
+	h3 = inter(h1,h2);
+	printf("两个集合的交集");
+	display(h3);	
+}
